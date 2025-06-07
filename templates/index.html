@@ -13,35 +13,36 @@
     </div>
 
     <script>
-        document.getElementById("predict-btn").addEventListener("click", () => {
-            const smsText = document.getElementById("smsText").value.trim();
+    document.getElementById("predict-btn").addEventListener("click", () => {
+        const smsText = document.getElementById("smsText").value.trim();
 
-            if (!smsText) {
-                document.getElementById("result").innerText = "Please enter a message.";
-                return;
+        if (!smsText) {
+            document.getElementById("result").innerText = "Please enter a message.";
+            return;
+        }
+
+        fetch("/predict", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email: smsText })  // Must match backend key
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Server returned an error.");
             }
-
-            fetch("/predict", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email: smsText })  // 'email' key must match Flask backend
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Server returned an error.");
-                }
-                return response.json();
-            })
-            .then(data => {
-                document.getElementById("result").innerText = data.prediction || data.error;
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                document.getElementById("result").innerText = "Error: " + error.message;
-            });
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById("result").innerText = data.prediction || data.error;
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            document.getElementById("result").innerText = "Error: " + error.message;
         });
-    </script>
+    });
+</script>
+
 </body>
 </html>
