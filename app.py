@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 import pickle
 from transform import transform_text
-import traceback
 
 app = Flask(__name__)
 
@@ -9,6 +8,12 @@ app = Flask(__name__)
 model = pickle.load(open('model.pkl', 'rb'))
 vectorizer = pickle.load(open('vectorizer.pkl', 'rb'))
 
+# Root route to serve frontend
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+# Prediction route
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
@@ -23,7 +28,6 @@ def predict():
 
         # Convert NumPy type to native Python
         prediction = int(prediction)
-
         result = "Spam" if prediction == 1 else "Not Spam"
 
         return jsonify({"prediction": result})
@@ -32,7 +36,6 @@ def predict():
         import traceback
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
-
 
 if __name__ == '__main__':
     app.run(debug=True)
