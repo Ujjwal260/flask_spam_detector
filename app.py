@@ -9,25 +9,30 @@ app = Flask(__name__)
 model = pickle.load(open('model.pkl', 'rb'))
 vectorizer = pickle.load(open('vectorizer.pkl', 'rb'))
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
         data = request.get_json()
-        email_text = data.get('email', '')
+        message = data.get("email", "")
 
-        # Vectorize and predict
-        transformed = vectorizer.transform([email_text])
-        prediction = model.predict(transformed)[0]
+        if not message:
+            return jsonify({"error": "No input provided"}), 400
 
-        return jsonify({'prediction': prediction})
+        vectorized = vectorizer.transform([message])
+        prediction = model.predict(vectorized)[0]
+
+        # Convert NumPy type to native Python
+        prediction = int(prediction)
+
+        result = "Spam" if prediction == 1 else "Not Spam"
+
+        return jsonify({"prediction": result})
+
     except Exception as e:
-        # Log the error for debugging
+        import traceback
         traceback.print_exc()
-        return jsonify({'error': str(e)}), 500
+        return jsonify({"error": str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)
