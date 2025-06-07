@@ -8,7 +8,19 @@
     <div class="container">
         <h2>SMS Spam Detector</h2>
         <textarea id="smsText" placeholder="Enter SMS message..."></textarea>
+
+        <!-- Voice Input -->
+        <div class="mic-container">
+            <button id="mic-btn" title="Click to speak">🎙️ Speak</button>
+        </div>
+        
         <button id="predict-btn">Predict</button>
+
+
+        <!-- Spinner -->
+        <div id="loading-spinner" class="spinner" style="display: none;"></div>
+
+        
         <div id="result"></div>
     </div>
 
