@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 import pickle
 from transform import transform_text
-
+import os
 app = Flask(__name__)
 
 # Load model and vectorizer
