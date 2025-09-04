@@ -36,3 +36,23 @@ This project aims to build and deploy a Machine Learning model that can classify
 - Serialized model and vectorizer using `pickle` (`model.pkl`, `vectorizer.pkl`)
 
 ## 📁 Project Structure
+├── app.py # Flask application
+├── sms-spam-detection.ipynb # Jupyter notebook with model code
+├── spam.csv # Dataset
+├── model.pkl # Trained ML model
+├── vectorizer.pkl # TF-IDF vectorizer
+├── transform.py # Data preprocessing code
+├── templates/ # HTML templates (index.html)
+├── static/ # CSS files
+├── requirements.txt # Python dependencies
+└── Procfile # Gunicorn config for deployment
+
+## 🚀 How to Run
+1. Clone this repo  
+2. Install requirements: `pip install -r requirements.txt`  
+3. Run: `python app.py`  
+4. Access the web app at `localhost:5000`
+
+## 💡 Outcome
+- Successfully deployed a spam detection model with a user-friendly web interface
+- Accurate detection of spam vs ham using lightweight NLP techniques
